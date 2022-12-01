@@ -14,7 +14,6 @@ router.post('/',
   Product.createProduct
 )
 router.get('/search', Authentication, Product.searchProduct)
-router.get('/ownership', Authentication, checkRole('Admin'), Product.findProductsByOwnership)
 router.get('/:id', Authentication, Product.findProductById)
 router.put('/:id',
   Authentication,
