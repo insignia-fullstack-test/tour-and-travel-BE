@@ -2,7 +2,7 @@ const httpStatus = require('http-status')
 const uniqid = require('uniqid')
 const moment = require('moment')
 
-const { Order, Customer } = require('../models')
+const { Order, Customer } = require('../config/database/models')
 
 const catchAsync = require('../utils/catchAsync')
 const ApiError = require('../utils/ApiError')

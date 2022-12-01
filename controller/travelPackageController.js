@@ -1,5 +1,5 @@
 const httpStatus = require('http-status')
-const { TravelPackage } = require('../models')
+const { TravelPackage } = require('../config/database/models')
 const { Op } = require('sequelize')
 
 const imagekit = require('../lib/imageKit')
