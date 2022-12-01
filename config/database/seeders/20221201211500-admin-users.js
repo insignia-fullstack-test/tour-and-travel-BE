@@ -20,19 +20,19 @@ module.exports = {
         name: 'Imam',
         email: 'imam.hermawan@gmail.com',
         password: bcrypt.hashSync('secret', 10),
-        role: 'admin'
+        role: 'Admin'
       },
       {
         name: 'admin',
         email: 'admin@gmail.com',
         password: bcrypt.hashSync('secret', 10),
-        role: 'admin'
+        role: 'Admin'
       },
       {
         name: 'tour admin',
         email: 'tour_admin@gmail.com',
         password: bcrypt.hashSync('secret', 10),
-        role: 'admin'
+        role: 'Admin'
       }
     ])
   },
