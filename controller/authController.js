@@ -10,7 +10,11 @@ const register = catchAsync(async (req, res) => {
   const { name, email, password, address, phoneNumber } = req.body
 
   // validasi jika email sudah ada
-  const user = await Customer.findUser(email)
+  const user = await Customer.findOne({
+    where: {
+      email
+    }
+  })
   if (user) {
     throw new ApiError(httpStatus.BAD_REQUEST, "email already exist!")
   }
@@ -33,10 +37,18 @@ const register = catchAsync(async (req, res) => {
     password: hashedPassword,
   })
 
+  // generate token utk user yg success login
+  const token = jwt.sign({
+    id: newUser.id,
+    name: newUser.name,
+    role: newUser.role
+  }, process.env.SECRET_KEY)
+
   res.status(201).json({
     status: 'success',
     data: {
-      newUser
+      user: newUser,
+      token
     }
   })
 })
@@ -68,10 +80,12 @@ const login = catchAsync(async (req, res) => {
     res.status(200).json({
       status: 'Success',
       data: {
-        name: user.name,
-        email: user.email,
-        address: user.address,
-        phoneNumber: user.phone,
+        user: {
+          name: user.name,
+          email: user.email,
+          address: user.address,
+          phoneNumber: user.phone
+        },
         token
       }
     })
