@@ -2,27 +2,36 @@ const httpStatus = require('http-status')
 const uniqid = require('uniqid')
 const moment = require('moment')
 
-const { Order, Customer } = require('../config/database/models')
+const { Order, Customer, OrderDetail } = require('../config/database/models')
 
 const catchAsync = require('../utils/catchAsync')
 const ApiError = require('../utils/ApiError')
 
 const createOrder = catchAsync(async (req, res) => {
   // create unique order number  
-  const date = moment().format('YYYYMMDDHHmmss');
-  const uniqId = uniqid.time().toUpperCase();
-  const orderNumber = `Order${date}${uniqId}`;
+  const date = moment().format('YYYYMMDDHHmmss')
+  const uniqId = uniqid.time().toUpperCase()
+  const orderNumber = `Order${date}${uniqId}`
+
+  const totalPrice = req.body.qty * req.body.price
 
   const newOrder = await Order.create({
     orderNumber: orderNumber,
     customerId: req.user.id,
-    totalPrice: req.body.totalPrice
+    totalPrice
+  })
+
+  const orderDetails = await OrderDetail.create({
+    packageId: req.body.packageId,
+    orderId: newOrder.id,
+    qty: req.body.qty
   })
 
   res.status(201).json({
     status: 'Success',
     data: {
-      newOrder
+      newOrder,
+      orderDetails
     }
   })
 })
