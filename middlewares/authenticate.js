@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { User, Profile } = require('../config/database/models');
+const { Customer } = require('../config/database/models');
 
 module.exports = function (req, res, next) {
   // req is an object
@@ -17,12 +17,9 @@ module.exports = function (req, res, next) {
       })
     }
 
-    const payload = jwt.verify(token, 'rahasia')
-    User.findByPk(payload.id, {
-      include: {
-        model: Profile
-      }
-    })
+    const payload = jwt.verify(token, process.env.SECRET_KEY)
+    console.log(payload)
+    Customer.findByPk(payload.id)
       .then(instance => {
         req.user = instance;
         next()
